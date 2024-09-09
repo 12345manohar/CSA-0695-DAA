@@ -1,0 +1,51 @@
+#include <stdio.h>
+
+void findMaxMin(int arr[], int left, int right, int *max, int *min) {
+    if (left == right) {
+        *max = arr[left];
+        *min = arr[left];
+    } else if (left == right - 1) {
+        if (arr[left] > arr[right]) {
+            *max = arr[left];
+            *min = arr[right];
+        } else {
+            *max = arr[right];
+            *min = arr[left];
+        }
+    } else {
+        int mid = left + (right - left) / 2;
+
+        int leftMax, leftMin;
+        int rightMax, rightMin;
+
+        findMaxMin(arr, left, mid, &leftMax, &leftMin);
+        findMaxMin(arr, mid + 1, right, &rightMax, &rightMin);
+
+        *max = (leftMax > rightMax) ? leftMax : rightMax;
+        *min = (leftMin < rightMin) ? leftMin : rightMin;
+    }
+}
+
+int main() {
+    int size;
+
+    printf("Enter the number of elements: ");
+    scanf("%d", &size);
+
+    int arr[size];
+
+    printf("Enter %d elements:\n", size);
+    for (int i = 0; i < size; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    int max, min;
+    findMaxMin(arr, 0, size - 1, &max, &min);
+
+    printf("Maximum value: %d\n", max);
+    printf("Minimum value: %d\n", min);
+
+    printf("\n-- Program by B Manohar, 192211557 --\n");
+
+    return 0;
+}

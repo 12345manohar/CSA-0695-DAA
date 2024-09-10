@@ -1,0 +1,49 @@
+#include <stdio.h>
+
+#define MAX 100
+
+int main() {
+    int n, i, j, k, l;
+    float p[MAX], q[MAX], e[MAX][MAX], w[MAX][MAX], root[MAX][MAX];
+
+    printf("Enter the number of keys: ");
+    scanf("%d", &n);
+
+    printf("Enter the probabilities for the keys (p): \n");
+    for (i = 1; i <= n; i++) {
+        printf("p[%d] = ", i);
+        scanf("%f", &p[i]);
+    }
+
+    printf("Enter the probabilities for the dummy keys (q): \n");
+    for (i = 0; i <= n; i++) {
+        printf("q[%d] = ", i);
+        scanf("%f", &q[i]);
+    }
+
+    for (i = 0; i <= n; i++) {
+        e[i][i] = q[i];
+        w[i][i] = q[i];
+    }
+
+    for (l = 1; l <= n; l++) {
+        for (i = 0; i <= n - l; i++) {
+            j = i + l;
+            e[i][j] = 1000000; // Large value
+            w[i][j] = w[i][j - 1] + p[j] + q[j];
+
+            for (k = i + 1; k <= j; k++) {
+                float cost = e[i][k - 1] + e[k][j] + w[i][j];
+                if (cost < e[i][j]) {
+                    e[i][j] = cost;
+                    root[i][j] = k;
+                }
+            }
+        }
+    }
+
+    printf("Optimal cost of Binary Search Tree: %.2f\n", e[0][n]);
+    printf("Root of the optimal Binary Search Tree: %.0f\n", root[0][n]);
+
+    return 0;
+}

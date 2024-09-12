@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <limits.h>
+
+#define N 4 // Number of workers and tasks
+
+int cost[N][N] = {
+    {10, 20, 30, 40},
+    {50, 60, 70, 80},
+    {90, 100, 110, 120},
+    {130, 140, 150, 160}
+};
+
+int min_cost = INT_MAX;
+int assignment[N];
+
+void branch_and_bound(int worker, int task, int cost_so_far) {
+    if (task == N) {
+        if (cost_so_far < min_cost) {
+            min_cost = cost_so_far;
+            for (int i = 0; i < N; i++) {
+                assignment[i] = cost[i][task];
+            }
+        }
+        return;
+    }
+
+    for (int i = 0; i < N; i++) {
+        if (cost[worker][i] < INT_MAX) {
+            int new_cost = cost_so_far + cost[worker][i];
+            cost[worker][i] = INT_MAX; // Mark as assigned
+            branch_and_bound(worker + 1, task + 1, new_cost);
+            cost[worker][i] = cost[worker][i]; // Unmark
+        }
+    }
+}
+
+int main() {
+    branch_and_bound(0, 0, 0);
+    printf("Optimal assignment:\n");
+    for (int i = 0; i < N; i++) {
+        printf("Worker %d: Task %d\n", i, assignment[i]);
+    }
+    printf("Minimum cost: %d\n", min_cost);
+    return 0;
+}

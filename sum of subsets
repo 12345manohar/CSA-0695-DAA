@@ -1,0 +1,35 @@
+#include <stdio.h>
+
+int A[10] = {1, 2, 3, 4, 5};
+int n = 5;
+int sum = 10; // target sum
+int subset_sum = 0;
+int include[10];
+
+void backtrack(int k) {
+    if (subset_sum == sum) {
+        printf("Subset found: ");
+        for (int i = 0; i < k; i++) {
+            if (include[i]) printf("%d ", A[i]);
+        }
+        printf("\n");
+    } else if (subset_sum > sum || k == n) return;
+    else {
+        include[k] = 1;
+        subset_sum += A[k];
+        backtrack(k + 1);
+        include[k] = 0;
+        subset_sum -= A[k];
+        backtrack(k + 1);
+    }
+}
+
+int main() {
+    printf("Sum of Subsets problem\n");
+    printf("Set: ");
+    for (int i = 0; i < n; i++) printf("%d ", A[i]);
+    printf("\nTarget sum: %d\n", sum);
+    backtrack(0);
+    printf("B Manohar - 192211557\n");
+    return 0;
+}

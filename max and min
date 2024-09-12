@@ -1,0 +1,17 @@
+#include <stdio.h>
+#include <limits.h>
+
+int main() {
+    int num, min = INT_MAX, max = INT_MIN;
+    printf("Enter numbers (0 to stop): ");
+    while (1) {
+        scanf("%d", &num);
+        if (num == 0) break;
+        if (num < min) min = num;
+        if (num > max) max = num;
+    }
+    printf("Minimum value sequence: %d\n", min);
+    printf("Maximum value sequence: %d\n", max);
+    printf("B Manohar - 192211557\n");
+    return 0;
+}

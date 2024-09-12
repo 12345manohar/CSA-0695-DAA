@@ -1,0 +1,53 @@
+#include <stdio.h>
+
+int graph[10][10] = {
+    {0, 1, 1, 1, 0},
+    {1, 0, 1, 0, 1},
+    {1, 1, 0, 1, 1},
+    {1, 0, 1, 0, 1},
+    {0, 1, 1, 1, 0}
+};
+int colors[10];
+int m = 3; // number of colors
+
+void print_colors() {
+    for (int i = 0; i < 5; i++) {
+        printf("%d ", colors[i]);
+    }
+    printf("\n");
+}
+
+int is_safe(int vertex, int color) {
+    for (int i = 0; i < 5; i++) {
+        if (graph[vertex][i] && colors[i] == color) return 0;
+    }
+    return 1;
+}
+
+void backtrack(int vertex) {
+    if (vertex == 5) {
+        print_colors();
+    } else {
+        for (int color = 1; color <= m; color++) {
+            if (is_safe(vertex, color)) {
+                colors[vertex] = color;
+                backtrack(vertex + 1);
+            }
+        }
+    }
+}
+
+int main() {
+    printf("Graph Coloring problem\n");
+    printf("Graph:\n");
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            printf("%d ", graph[i][j]);
+        }
+        printf("\n");
+    }
+    printf("Number of colors: %d\n", m);
+    backtrack(0);
+    printf("B Manohar - 192211557\n");
+    return 0;
+}

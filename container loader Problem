@@ -1,0 +1,43 @@
+#include <stdio.h>
+
+#define NUM_CONTAINERS 5
+#define LOADER_CAPACITY 10
+
+int weights[NUM_CONTAINERS] = {2, 3, 4, 5, 6};
+int values[NUM_CONTAINERS] = {10, 20, 30, 40, 50};
+
+int dp[NUM_CONTAINERS + 1][LOADER_CAPACITY + 1];
+
+int compute_loader_value() {
+    // Initialize the dynamic programming table
+    for (int i = 0; i <= NUM_CONTAINERS; i++) {
+        for (int j = 0; j <= LOADER_CAPACITY; j++) {
+            if (i == 0 || j == 0) {
+                dp[i][j] = 0;
+            } else if (weights[i - 1] <= j) {
+                dp[i][j] = max(values[i - 1] + dp[i - 1][j - weights[i - 1]], dp[i - 1][j]);
+            } else {
+                dp[i][j] = dp[i - 1][j];
+            }
+        }
+    }
+    return dp[NUM_CONTAINERS][LOADER_CAPACITY];
+}
+void print_loading_plan() {
+    int i = NUM_CONTAINERS;
+    int j = LOADER_CAPACITY;
+    while (i > 0 && j > 0) {
+        if (dp[i][j] != dp[i - 1][j]) {
+            printf("Container %d: weight = %d, value = %d\n", i, weights[i - 1], values[i - 1]);
+            j -= weights[i - 1];
+        }
+        i--;
+    }
+}
+
+int main() {
+    printf("Container Loader Problem\n");
+    printf("Maximum value that can be loaded: %d\n", compute_loader_value());
+    print_loading_plan();
+    return 0;
+}

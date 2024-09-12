@@ -1,0 +1,28 @@
+#include <stdio.h>
+
+int main() {
+    int list[10] = {1, 2, 3, 4, 5};
+    int num, pos, i;
+
+    printf("Enter a number to insert: ");
+    scanf("%d", &num);
+    printf("Enter the position to insert (1-5): ");
+    scanf("%d", &pos);
+
+    // Shift elements to the right
+    for (i = 4; i >= pos - 1; i--) {
+        list[i + 1] = list[i];
+    }
+
+    // Insert the number
+    list[pos - 1] = num;
+
+    // Print the updated list
+    printf("Updated list: ");
+    for (i = 0; i < 6; i++) {
+        printf("%d ", list[i]);
+    }
+    printf("\n");
+    printf("B Manohar - 192211557\n");
+    return 0;
+}

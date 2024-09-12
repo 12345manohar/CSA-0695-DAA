@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <limits.h>
+
+#define N 4 // Number of cities
+#define INF INT_MAX
+
+int dist[N][N] = {
+    {0, 10, 15, 20},
+    {10, 0, 35, 25},
+    {15, 35, 0, 30},
+    {20, 25, 30, 0}
+};
+
+int dp[1 << N][N];
+
+void tsp(int mask, int pos) {
+    if (dp[mask][pos] != -1) return;
+    if (mask == (1 << N) - 1) {
+        dp[mask][pos] = dist[pos][0];
+        return;
+    }
+    int min = INF;
+    for (int i = 0; i < N; i++) {
+        if (!(mask & (1 << i))) {
+            int new_mask = mask | (1 << i);
+            tsp(new_mask, i);
+            int temp = dp[new_mask][i] + dist[i][pos];
+            if (temp < min) min = temp;
+        }
+    }
+    dp[mask][pos] = min;
+}
+
+int main() {
+    for (int i = 0; i < (1 << N); i++) {
+        for (int j = 0; j < N; j++) {
+            dp[i][j] = -1;
+        }
+    }
+    tsp(1, 0);
+    int min = INF;
+    for (int i = 1; i < N; i++) {
+        int temp = dp[(1 << N) - 1][i] + dist[i][0];
+        if (temp < min) min = temp;
+    }
+    printf("Minimum cost: %d\n", min);
+    printf("B Manohar - 192211557\n");
+    return 0;
+}

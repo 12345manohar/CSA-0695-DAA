@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include <limits.h>
+
+#define V 4 // Number of vertices
+
+int graph[V][V] = {
+    {0, 3, INF, 7},
+    {8, 0, 2, INF},
+    {5, INF, 0, 1},
+    {2, INF, INF, 0}
+};
+
+void floyd() {
+    int i, j, k;
+    for (k = 0; k < V; k++) {
+        for (i = 0; i < V; i++) {
+            for (j = 0; j < V; j++) {
+                if (graph[i][k] + graph[k][j] < graph[i][j]) {
+                    graph[i][j] = graph[i][k] + graph[k][j];
+                }
+            }
+        }
+    }
+    printf("Shortest distances:\n");
+    for (i = 0; i < V; i++) {
+        for (j = 0; j < V; j++) {
+            printf("%d ", graph[i][j]);
+        }
+        printf("\n");
+    }
+    printf("B Manohar - 192211557\n");
+}
+
+int main() {
+    floyd();
+    return 0;
+}
